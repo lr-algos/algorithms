@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+    <div id="root1">
+        <div>
+          <div></div>
+        </div>
+        <div>
+          <div id="node1"></div>
+          <div></div>
+        </div>
+      </div>
+    
+      <div id="root2">
+        <div>
+          <div></div>
+        </div>
+        <div>
+          <div id="node2"></div>
+          <div></div>
+        </div>
+      </div>
+
+
+<script>
+ function getChildren(node) {
+  return Array.from(node.childNodes);
+}
+function getPathFromNode(node, root) {
+  const path = [];
+  while (node !== root && node && node.parentNode) {
+      const children = getChildren(node.parentNode);
+      const index = children.indexOf(node);
+    // const index = getChildren(node.parentNode).findIndex(el => el === node);
+    path.push(index);
+    node = node.parentNode;
+  }
+  return path.reverse();
+}
+function getCorrespondingNode(node, root1, root2) {
+  const path = getPathFromNode(node, root1);
+  let current = root2;
+  path.forEach(index => {
+    current = current.childNodes[index];
+  })
+  return current;
+}
+const root1 = document.getElementById('root1');
+const root2 = document.getElementById('root2');
+const node1 = document.getElementById('node1');
+const node2 = document.getElementById('node2');
+console.log(getCorrespondingNode(node1, root1, root2) === node2); // true
+console.log(getCorrespondingNode(node2, root2, root1) === node1) // true
+</script>
+
+</body>
+</html>
